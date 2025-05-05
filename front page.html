@@ -1,0 +1,727 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Floodguard Network</title>
+    <link rel="Website Icon" type="png" 
+    href="C:\xamppx\htdocs\CSE370\flood.png">
+    <style>
+        :root {
+            --admin-color: #8e44ad;
+            --volunteer-color: #27ae60;
+            --donor-color: #3498db;
+            --light-color: #ecf0f1;
+            --dark-color: #2c3e50;
+            --shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+            --border-radius: 6px;
+        }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        
+        body {
+            background-color: #f5f7fa;
+            color: var(--dark-color);
+        }
+        
+        /* Top Navigation Bar */
+        .navbar {
+            background-color: white;
+            box-shadow: var(--shadow);
+            padding: 0 20px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 70px;
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            z-index: 1000;
+        }
+        
+        .nav-links {
+            display: flex;
+            align-items: center;
+            gap: 40px;
+        }
+        
+        .nav-links a {
+            color: var(--dark-color);
+            text-decoration: none;
+            font-weight: 500;
+            transition: color 0.3s;
+        }
+        
+        .nav-links a:hover {
+            color: var(--donor-color);
+        }
+        
+        /* User Icon and Sidebar */
+        .user-icon {
+            position: absolute;
+            right: 20px;
+            font-size: 1.5rem;
+            cursor: pointer;
+            color: var(--dark-color);
+            transition: all 0.3s;
+        }
+        
+        .user-icon:hover {
+            color: var(--donor-color);
+        }
+        
+        .sidebar {
+            position: fixed;
+            top: 70px;
+            right: -300px;
+            width: 300px;
+            height: calc(100vh - 70px);
+            background-color: white;
+            box-shadow: -2px 0 10px rgba(0, 0, 0, 0.1);
+            transition: right 0.3s ease;
+            z-index: 999;
+            padding: 20px;
+            overflow-y: auto;
+        }
+        
+        .sidebar.active {
+            right: 0;
+        }
+        
+        .sidebar-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+            padding-bottom: 10px;
+            border-bottom: 1px solid #eee;
+        }
+        
+        .sidebar-header h3 {
+            font-size: 1.2rem;
+        }
+        
+        .close-sidebar {
+            background: none;
+            border: none;
+            font-size: 1.3rem;
+            cursor: pointer;
+            color: #95a5a6;
+        }
+        
+        .sidebar-option {
+            padding: 12px 15px;
+            margin-bottom: 10px;
+            border-radius: var(--border-radius);
+            background-color: #f5f7fa;
+            cursor: pointer;
+            transition: all 0.3s;
+            font-weight: 500;
+        }
+        
+        .sidebar-option:hover {
+            background-color: var(--donor-color);
+            color: white;
+        }
+        
+        /* Modal Styles */
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background-color: rgba(0, 0, 0, 0.5);
+            z-index: 2000;
+            justify-content: center;
+            align-items: center;
+        }
+        
+        .modal-content {
+            background-color: white;
+            border-radius: var(--border-radius);
+            width: 90%;
+            max-width: 450px;
+            overflow: hidden;
+            animation: modalFadeIn 0.3s;
+        }
+        
+        @keyframes modalFadeIn {
+            from { opacity: 0; transform: translateY(-20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        
+        .modal-header {
+            padding: 15px 20px;
+            border-bottom: 1px solid #eee;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .modal-header h3 {
+            font-size: 1.3rem;
+        }
+        
+        .close-btn {
+            background: none;
+            border: none;
+            font-size: 1.5rem;
+            cursor: pointer;
+            color: #95a5a6;
+        }
+        
+        .modal-body {
+            padding: 20px;
+            max-height: 70vh;
+            overflow-y: auto;
+        }
+        
+        .form-group {
+            margin-bottom: 15px;
+        }
+        
+        .form-group label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 500;
+            font-size: 0.95rem;
+        }
+        
+        .form-group input, 
+        .form-group select,
+        .form-group textarea {
+            width: 100%;
+            padding: 10px 15px;
+            border: 1px solid #ddd;
+            border-radius: var(--border-radius);
+            font-size: 1rem;
+        }
+        
+        .form-group input:focus,
+        .form-group select:focus {
+            outline: none;
+            border-color: var(--donor-color);
+        }
+        
+        .submit-btn {
+            width: 100%;
+            padding: 12px;
+            border: none;
+            border-radius: var(--border-radius);
+            font-weight: 600;
+            cursor: pointer;
+            margin-top: 10px;
+            color: white;
+            font-size: 1rem;
+        }
+        
+        .admin .submit-btn { background-color: var(--admin-color); }
+        .volunteer .submit-btn { background-color: var(--volunteer-color); }
+        .donor .submit-btn { background-color: var(--donor-color); }
+        
+        .form-footer {
+            margin-top: 15px;
+            text-align: center;
+            font-size: 0.9rem;
+        }
+        
+        .form-footer a {
+            color: var(--donor-color);
+            text-decoration: none;
+            font-weight: 500;
+        }
+        
+        .form-toggle {
+            display: flex;
+            justify-content: center;
+            margin-bottom: 20px;
+            border-bottom: 1px solid #eee;
+            padding-bottom: 10px;
+        }
+        
+        .form-toggle button {
+            border: none;
+            background: none;
+            padding: 5px 15px;
+            cursor: pointer;
+            font-weight: 600;
+            color: #95a5a6;
+            position: relative;
+        }
+        
+        .form-toggle button.active {
+            color: var(--dark-color);
+        }
+        
+        .form-toggle button.active::after {
+            content: '';
+            position: absolute;
+            bottom: -11px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 50%;
+            height: 2px;
+        }
+        
+        .admin .form-toggle button.active::after { background-color: var(--admin-color); }
+        .volunteer .form-toggle button.active::after { background-color: var(--volunteer-color); }
+        .donor .form-toggle button.active::after { background-color: var(--donor-color); }
+        
+        /* Role selection tabs */
+        .role-tabs {
+            display: flex;
+            margin-bottom: 20px;
+            border-bottom: 1px solid #eee;
+        }
+        
+        .role-tab {
+            flex: 1;
+            text-align: center;
+            padding: 10px;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+        
+        .role-tab.active {
+            border-bottom: 3px solid var(--donor-color);
+            font-weight: 600;
+        }
+        
+        .role-content {
+            display: none;
+        }
+        
+        .role-content.active {
+            display: block;
+        }
+        
+        /* Responsive */
+        @media (max-width: 768px) {
+            .nav-links {
+                gap: 20px;
+            }
+            
+            .sidebar {
+                width: 250px;
+            }
+        }
+
+        /* Slideshow container */
+        .slideshow-container {
+            position: relative;
+            width: 100%;
+            height: 100vh;
+            overflow: hidden;
+        }
+
+        /* Slideshow images */
+        .slideshow-container img {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            filter: blur(8px);
+            animation: fade 12s infinite;
+        }
+
+        /* Fade animation */
+        @keyframes fade {
+            0% { opacity: 1; }
+            33% { opacity: 0; }
+            66% { opacity: 0; }
+            100% { opacity: 1; }
+        }
+
+        /* Text container */
+        .text-container {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            text-align: center;
+            color: black;
+            z-index: 2;
+            animation: popUp 1s ease-out;
+            background-color: rgba(255, 255, 255, 0.8);
+            padding: 20px;
+            border-radius: var(--border-radius);
+            box-shadow: var(--shadow);
+        }
+
+        .text-container h1 {
+            font-size: 3rem;
+            margin-bottom: 20px;
+        }
+
+        .text-container p {
+            font-size: 1.5rem;
+        }
+
+        @keyframes popUp {
+            0% {
+                transform: translate(-50%, -50%) scale(0.8);
+                opacity: 0;
+            }
+            100% {
+                transform: translate(-50%, -50%) scale(1);
+                opacity: 1;
+            }
+        }
+
+        /* Slideshow image transitions */
+        .slideshow-container img:nth-child(1) {
+            animation-delay: 0s;
+        }
+
+        .slideshow-container img:nth-child(2) {
+            animation-delay: 4s;
+        }
+
+        .slideshow-container img:nth-child(3) {
+            animation-delay: 8s;
+        }
+
+        .slideshow-container img:nth-child(4) {
+            animation-delay: 12s;
+        }
+    </style>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+</head>
+<body>
+    <!-- Top Navigation Bar -->
+    <nav class="navbar">
+        <div class="nav-links">
+            <a href="#">Progress</a>
+            <a href="#">Resources</a>
+            <a href="#">Emergency Contact</a>
+        </div>
+        
+        <div class="user-actions">
+            <i class="fas fa-user-circle user-icon" onclick="toggleSidebar()"></i>
+        </div>
+    </nav>
+    
+    <!-- Sidebar -->
+    <div class="sidebar" id="sidebar">
+        <div class="sidebar-header">
+            <h3>User Options</h3>
+            <button class="close-sidebar" onclick="toggleSidebar()">&times;</button>
+        </div>
+        <div class="sidebar-option" onclick="openModal('login')">
+            <i class="fas fa-sign-in-alt"></i> Login
+        </div>
+        <div class="sidebar-option" onclick="openModal('signup')">
+            <i class="fas fa-user-plus"></i> Sign Up
+        </div>
+    </div>
+    
+    <!-- Main Content -->
+    <div class="slideshow-container">
+        <img src="C:\xamppx\htdocs\CSE370\istockphoto-837800990-612x612.jpg" alt="Flood Image 1">
+        <img src="C:\xamppx\htdocs\CSE370\istockphoto-1402832428-612x612.jpg" alt="Flood Image 2">
+        <img src="C:\xamppx\htdocs\CSE370\istockphoto-1607888702-612x612.jpg" alt="Flood Image 3">
+        <img src="C:\xamppx\htdocs\CSE370\istockphoto-2168618098-612x612.jpg" alt="Flood Image 4">
+
+        <div class="text-container">
+            <h1>Welcome to Floodguard Network</h1>
+            <p>We are here to help you connect with the right resources and support during flood emergencies.</p>
+        </div>
+    </div>
+    
+    <!-- Login Modal -->
+    <div id="login-modal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3>Login</h3>
+                <button class="close-btn" onclick="closeModal('login')">&times;</button>
+            </div>
+            <div class="modal-body">
+                <div class="role-tabs">
+                    <div class="role-tab active" onclick="showRole('admin-login')">Admin</div>
+                    <div class="role-tab" onclick="showRole('volunteer-login')">Volunteer</div>
+                    <div class="role-tab" onclick="showRole('donor-login')">Donor</div>
+                </div>
+                
+                <!-- Admin Login -->
+                <div id="admin-login" class="role-content active">
+                    <form id="admin-form">
+                        <div class="form-group">
+                            <label for="admin-username">Username</label>
+                            <input type="text" id="admin-username" placeholder="Enter your username" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="admin-password">Password</label>
+                            <input type="password" id="admin-password" placeholder="Enter password" required>
+                        </div>
+                        <button type="submit" class="submit-btn admin">Login</button>
+                    </form>
+                </div>
+                
+                <!-- Volunteer Login -->
+                <div id="volunteer-login" class="role-content">
+                    <form id="volunteer-login-form">
+                        <div class="form-group">
+                            <label for="volunteer-login-id">Username</label>
+                            <input type="text" id="volunteer-login-id" placeholder="Enter your username" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="volunteer-login-password">Password</label>
+                            <input type="password" id="volunteer-login-password" placeholder="Enter password" required>
+                        </div>
+                        <button type="submit" class="submit-btn volunteer">Login</button>
+                        <div class="form-footer">
+                            <a href="#">Forgot password?</a>
+                        </div>
+                    </form>
+                </div>
+                
+                <!-- Donor Login -->
+                <div id="donor-login" class="role-content">
+                    <form id="donor-login-form">
+                        <div class="form-group">
+                            <label for="donor-login-id">Username</label>
+                            <input type="text" id="donor-login-id" placeholder="Enter your username" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="donor-login-password">Password</label>
+                            <input type="password" id="donor-login-password" placeholder="Enter password" required>
+                        </div>
+                        <button type="submit" class="submit-btn donor">Login</button>
+                        <div class="form-footer">
+                            <a href="#">Forgot password?</a>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Signup Modal -->
+    <div id="signup-modal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3>Sign Up</h3>
+                <button class="close-btn" onclick="closeModal('signup')">&times;</button>
+            </div>
+            <div class="modal-body">
+                <div class="role-tabs">
+                    <div class="role-tab active" onclick="showRole('volunteer-signup')">Volunteer</div>
+                    <div class="role-tab" onclick="showRole('donor-signup')">Donor</div>
+                </div>
+                
+                <!-- Volunteer Signup -->
+                <div id="volunteer-signup" class="role-content active">
+                    <form id="volunteer-signup-form">
+                        <div class="form-group">
+                            <label for="volunteer-name">Full Name</label>
+                            <input type="text" id="volunteer-name" placeholder="Enter your full name" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="volunteer-id">Username</label>
+                            <input type="text" id="volunteer-id" placeholder="Create username" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="volunteer-phone">Phone Number</label>
+                            <input type="tel" id="volunteer-phone" placeholder="Enter phone number" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="volunteer-location">Location</label>
+                            <input type="text" id="volunteer-location" placeholder="Enter your city" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="volunteer-password">Create Password</label>
+                            <input type="password" id="volunteer-password" placeholder="Create a password" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="volunteer-confirm-password">Confirm Password</label>
+                            <input type="password" id="volunteer-confirm-password" placeholder="Confirm password" required>
+                        </div>
+                        <button type="submit" class="submit-btn volunteer">Register as Volunteer</button>
+                        <div class="form-footer">
+                            Already have an account? <a href="#" onclick="switchToLogin('volunteer')">Login here</a>
+                        </div>
+                    </form>
+                </div>
+                
+                <!-- Donor Signup -->
+                <div id="donor-signup" class="role-content">
+                    <form id="donor-signup-form">
+                        <div class="form-group">
+                            <label for="donor-name">Full Name</label>
+                            <input type="text" id="donor-name" placeholder="Enter your full name" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="donor-id">Username</label>
+                            <input type="text" id="donor-id" placeholder="Create username" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="donor-phone">Phone Number</label>
+                            <input type="tel" id="donor-phone" placeholder="Enter phone number" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="donor-password">Create Password</label>
+                            <input type="password" id="donor-password" placeholder="Create a password" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="donor-confirm-password">Confirm Password</label>
+                            <input type="password" id="donor-confirm-password" placeholder="Confirm password" required>
+                        </div>
+                        <button type="submit" class="submit-btn donor">Register as Donor</button>
+                        <div class="form-footer">
+                            Already have an account? <a href="#" onclick="switchToLogin('donor')">Login here</a>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Toggle sidebar
+        function toggleSidebar() {
+            document.getElementById('sidebar').classList.toggle('active');
+        }
+        
+        // Modal functions
+        function openModal(type) {
+            closeAllModals();
+            document.getElementById(type + '-modal').style.display = 'flex';
+            toggleSidebar(); // Close sidebar when opening modal
+        }
+        
+        function closeModal(type) {
+            document.getElementById(type + '-modal').style.display = 'none';
+        }
+        
+        function closeAllModals() {
+            document.querySelectorAll('.modal').forEach(modal => {
+                modal.style.display = 'none';
+            });
+        }
+        
+        // Show/hide role tabs
+        function showRole(roleId) {
+            const modal = event.target.closest('.modal-content');
+            
+            // Update active tab
+            modal.querySelectorAll('.role-tab').forEach(tab => {
+                tab.classList.remove('active');
+            });
+            event.target.classList.add('active');
+            
+            // Show the selected role content
+            modal.querySelectorAll('.role-content').forEach(content => {
+                content.classList.remove('active');
+            });
+            document.getElementById(roleId).classList.add('active');
+        }
+        
+        // Switch between login and signup
+        function switchToLogin(role) {
+            closeModal('signup');
+            openModal('login');
+            
+            // Activate the corresponding role tab
+            setTimeout(() => {
+                const loginModal = document.getElementById('login-modal');
+                const tabs = loginModal.querySelectorAll('.role-tab');
+                tabs.forEach(tab => {
+                    tab.classList.remove('active');
+                    if (tab.textContent.toLowerCase().includes(role)) {
+                        tab.classList.add('active');
+                    }
+                });
+                
+                const contents = loginModal.querySelectorAll('.role-content');
+                contents.forEach(content => {
+                    content.classList.remove('active');
+                    if (content.id.includes(role)) {
+                        content.classList.add('active');
+                    }
+                });
+            }, 100);
+        }
+        
+        // Close modal when clicking outside
+        window.onclick = function(event) {
+            if (event.target.className === 'modal') {
+                event.target.style.display = 'none';
+            }
+        }
+        
+        // Form submissions
+        document.getElementById('admin-form').addEventListener('submit', function(e) {
+            e.preventDefault();
+            alert('Admin login submitted');
+            closeModal('login');
+        });
+        
+        document.getElementById('volunteer-login-form').addEventListener('submit', function(e) {
+            e.preventDefault();
+            alert('Volunteer login submitted');
+            closeModal('login');
+        });
+        
+        document.getElementById('volunteer-signup-form').addEventListener('submit', function(e) {
+            e.preventDefault();
+            // Validate passwords match
+            const password = document.getElementById('volunteer-password').value;
+            const confirmPassword = document.getElementById('volunteer-confirm-password').value;
+            
+            if (password !== confirmPassword) {
+                alert('Passwords do not match!');
+                return;
+            }
+            
+            // Collect form data
+            const formData = {
+                name: document.getElementById('volunteer-name').value,
+                id: document.getElementById('volunteer-id').value,
+                phone: document.getElementById('volunteer-phone').value,
+                location: document.getElementById('volunteer-location').value
+            };
+            
+            console.log('Volunteer Signup Data:', formData);
+            alert('Volunteer registration submitted successfully!');
+            closeModal('signup');
+        });
+        
+        document.getElementById('donor-login-form').addEventListener('submit', function(e) {
+            e.preventDefault();
+            alert('Donor login submitted');
+            closeModal('login');
+        });
+        
+        document.getElementById('donor-signup-form').addEventListener('submit', function(e) {
+            e.preventDefault();
+            // Validate passwords match
+            const password = document.getElementById('donor-password').value;
+            const confirmPassword = document.getElementById('donor-confirm-password').value;
+            
+            if (password !== confirmPassword) {
+                alert('Passwords do not match!');
+                return;
+            }
+            
+            // Collect form data
+            const formData = {
+                name: document.getElementById('donor-name').value,
+                id: document.getElementById('donor-id').value,
+                phone: document.getElementById('donor-phone').value
+            };
+            
+            console.log('Donor Signup Data:', formData);
+            alert('Donor registration submitted successfully!');
+            closeModal('signup');
+        });
+    </script>
+</body>
+</html>

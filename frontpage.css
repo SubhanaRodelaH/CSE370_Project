@@ -1,0 +1,42 @@
+.login-buttons {
+    display: flex;
+    align-items: center;
+    background-color: #f5f7fa;
+    border-radius: 30px;
+    padding: 5px;
+    box-shadow: var(--shadow);
+}
+
+.login-btn {
+    padding: 8px 20px;
+    border-radius: 30px;
+    border: none;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.3s;
+    background: none;
+}
+
+.main-login-btn {
+    color: var(--dark-color);
+}
+
+.main-signup-btn {
+    background-color: var(--donor-color);
+    color: white;
+}
+
+.login-btn:hover {
+    opacity: 0.9;
+}
+
+.main-login-btn.active {
+    background-color: var(--volunteer-color);
+    color: white;
+}
+
+.nav-links {
+    display: flex;
+    justify-content: flex-start; /* Adjust navigation links to the left */
+    align-items: center;
+}

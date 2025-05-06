@@ -108,6 +108,20 @@
             margin-right: 8px;
         }
         
+        /* Emergency Notification Bar */
+        .notification-bar {
+            background-color: #e74c3c;
+            color: white;
+            text-align: center;
+            padding: 10px;
+            font-weight: bold;
+            position: fixed;
+            top: 70px; /* Below the navbar */
+            left: 0;
+            right: 0;
+            z-index: 999;
+        }
+
         /* Main Content */
         .main-content {
             margin-top: 70px;
@@ -345,50 +359,6 @@
         .btn-secondary:hover {
             background-color: #7f8c8d;
         }
-
-        .chat-box {
-            position: fixed;
-            bottom: 20px;
-            right: 20px;
-            width: 300px;
-            background-color: white;
-            border-radius: var(--border-radius);
-            box-shadow: var(--shadow);
-            display: none;
-            flex-direction: column;
-            overflow: hidden;
-        }
-
-        .chat-header {
-            background-color: var(--admin-color);
-            color: white;
-            padding: 10px;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-        }
-
-        .chat-messages {
-            flex: 1;
-            padding: 10px;
-            overflow-y: auto;
-            max-height: 300px;
-            border-top: 1px solid #ddd;
-            border-bottom: 1px solid #ddd;
-        }
-
-        .chat-input {
-            display: flex;
-            padding: 10px;
-            gap: 10px;
-        }
-
-        .chat-input input {
-            flex: 1;
-            padding: 10px;
-            border: 1px solid #ddd;
-            border-radius: var(--border-radius);
-        }
     </style>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
 </head>
@@ -506,21 +476,6 @@
         </div>
     </div>
 
-    <!-- Chat Box -->
-    <div class="chat-box" id="chatBox">
-        <div class="chat-header">
-            <h3>Chat with Volunteers</h3>
-            <button id="closeChat" class="btn btn-secondary">Close</button>
-        </div>
-        <div class="chat-messages" id="chatMessages">
-            <!-- Messages will appear here -->
-        </div>
-        <div class="chat-input">
-            <input type="text" id="chatInput" placeholder="Type your message...">
-            <button id="sendChat" class="btn btn-primary">Send</button>
-        </div>
-    </div>
-
     <script>
         // Action buttons functionality
         document.querySelectorAll('.action-btn').forEach(btn => {
@@ -540,56 +495,6 @@
                 }
             });
         });
-
-        // Chat Box Functionality
-        const chatBox = document.getElementById('chatBox');
-        const chatMessages = document.getElementById('chatMessages');
-        const chatInput = document.getElementById('chatInput');
-        const sendChat = document.getElementById('sendChat');
-        const closeChat = document.getElementById('closeChat');
-
-        // Open Chat Box
-        const openChat = document.createElement('button');
-        openChat.textContent = 'Chat with Volunteers';
-        openChat.className = 'btn btn-primary';
-        openChat.style.position = 'fixed';
-        openChat.style.bottom = '20px';
-        openChat.style.right = '20px';
-        document.body.appendChild(openChat);
-
-        openChat.addEventListener('click', () => {
-            chatBox.style.display = 'flex';
-            openChat.style.display = 'none';
-        });
-
-        // Close Chat Box
-        closeChat.addEventListener('click', () => {
-            chatBox.style.display = 'none';
-            openChat.style.display = 'block';
-        });
-
-        // Send Message
-        sendChat.addEventListener('click', () => {
-            const message = chatInput.value.trim();
-            if (message) {
-                const messageElement = document.createElement('div');
-                messageElement.textContent = `Admin: ${message}`;
-                messageElement.style.marginBottom = '10px';
-                chatMessages.appendChild(messageElement);
-                chatInput.value = '';
-                chatMessages.scrollTop = chatMessages.scrollHeight;
-            }
-        });
-
-        // Simulate Volunteer Response
-        setInterval(() => {
-            const volunteerMessage = document.createElement('div');
-            volunteerMessage.textContent = 'Volunteer: How can I assist you?';
-            volunteerMessage.style.marginBottom = '10px';
-            volunteerMessage.style.color = 'gray';
-            chatMessages.appendChild(volunteerMessage);
-            chatMessages.scrollTop = chatMessages.scrollHeight;
-        }, 15000);
 
         // Logout Functionality
         document.getElementById('logoutBtn').addEventListener('click', function() {

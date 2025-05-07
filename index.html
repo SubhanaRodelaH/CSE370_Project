@@ -452,30 +452,32 @@
                 
                 <!-- Admin Login -->
                 <div id="admin-login" class="role-content active">
-                    <form id="admin-form">
+                    <form id="admin-form" action="login.php" method="POST">
                         <div class="form-group">
                             <label for="admin-username">Username</label>
-                            <input type="text" id="admin-username" placeholder="Enter your username" required>
+                            <input type="text" name="username" id="admin-username" placeholder="Enter your username" required>
                         </div>
                         <div class="form-group">
                             <label for="admin-password">Password</label>
-                            <input type="password" id="admin-password" placeholder="Enter password" required>
+                            <input type="password" name="password" id="admin-password" placeholder="Enter password" required>
                         </div>
+                        <input type="hidden" name="user_type" value="admin">
                         <button type="submit" class="submit-btn admin">Login</button>
                     </form>
                 </div>
                 
                 <!-- Volunteer Login -->
                 <div id="volunteer-login" class="role-content">
-                    <form id="volunteer-login-form">
+                    <form id="volunteer-login-form" action="login.php" method="POST">
                         <div class="form-group">
                             <label for="volunteer-login-id">Username</label>
-                            <input type="text" id="volunteer-login-id" placeholder="Enter your username" required>
+                            <input type="text" name="username" id="volunteer-login-id" placeholder="Enter your username" required>
                         </div>
                         <div class="form-group">
                             <label for="volunteer-login-password">Password</label>
-                            <input type="password" id="volunteer-login-password" placeholder="Enter password" required>
+                            <input type="password" name="password" id="volunteer-login-password" placeholder="Enter password" required>
                         </div>
+                        <input type="hidden" name="user_type" value="volunteer">
                         <button type="submit" class="submit-btn volunteer">Login</button>
                         <div class="form-footer">
                             <a href="#">Forgot password?</a>
@@ -485,15 +487,16 @@
                 
                 <!-- Donor Login -->
                 <div id="donor-login" class="role-content">
-                    <form id="donor-login-form">
+                    <form id="donor-login-form" action="login.php" method="POST">
                         <div class="form-group">
                             <label for="donor-login-id">Username</label>
-                            <input type="text" id="donor-login-id" placeholder="Enter your username" required>
+                            <input type="text" name="username" id="donor-login-id" placeholder="Enter your username" required>
                         </div>
                         <div class="form-group">
                             <label for="donor-login-password">Password</label>
-                            <input type="password" id="donor-login-password" placeholder="Enter password" required>
+                            <input type="password" name="password" id="donor-login-password" placeholder="Enter password" required>
                         </div>
+                        <input type="hidden" name="user_type" value="donor">
                         <button type="submit" class="submit-btn donor">Login</button>
                         <div class="form-footer">
                             <a href="#">Forgot password?</a>
@@ -519,31 +522,32 @@
                 
                 <!-- Volunteer Signup -->
                 <div id="volunteer-signup" class="role-content active">
-                    <form id="volunteer-signup-form">
+                    <form id="volunteer-signup-form" action="signup.php" method="POST">
                         <div class="form-group">
                             <label for="volunteer-name">Full Name</label>
-                            <input type="text" id="volunteer-name" placeholder="Enter your full name" required>
+                            <input type="text" name="full_name" id="volunteer-name" placeholder="Enter your full name" required>
                         </div>
                         <div class="form-group">
                             <label for="volunteer-id">Username</label>
-                            <input type="text" id="volunteer-id" placeholder="Create username" required>
+                            <input type="text" name="username" id="volunteer-id" placeholder="Create username" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="volunteer-email">Email</label>
+                            <input type="email" name="email" id="volunteer-email" placeholder="Enter your email" required>
                         </div>
                         <div class="form-group">
                             <label for="volunteer-phone">Phone Number</label>
-                            <input type="tel" id="volunteer-phone" placeholder="Enter phone number" required>
+                            <input type="tel" name="phone" id="volunteer-phone" placeholder="Enter phone number" required>
                         </div>
                         <div class="form-group">
                             <label for="volunteer-location">Location</label>
-                            <input type="text" id="volunteer-location" placeholder="Enter your city" required>
+                            <input type="text" name="location" id="volunteer-location" placeholder="Enter your city" required>
                         </div>
                         <div class="form-group">
                             <label for="volunteer-password">Create Password</label>
-                            <input type="password" id="volunteer-password" placeholder="Create a password" required>
+                            <input type="password" name="password" id="volunteer-password" placeholder="Create a password" required>
                         </div>
-                        <div class="form-group">
-                            <label for="volunteer-confirm-password">Confirm Password</label>
-                            <input type="password" id="volunteer-confirm-password" placeholder="Confirm password" required>
-                        </div>
+                        <input type="hidden" name="user_type" value="volunteer">
                         <button type="submit" class="submit-btn volunteer">Register as Volunteer</button>
                         <div class="form-footer">
                             Already have an account? <a href="#" onclick="switchToLogin('volunteer')">Login here</a>
@@ -553,27 +557,28 @@
                 
                 <!-- Donor Signup -->
                 <div id="donor-signup" class="role-content">
-                    <form id="donor-signup-form">
+                    <form id="donor-signup-form" action="signup.php" method="POST">
                         <div class="form-group">
                             <label for="donor-name">Full Name</label>
-                            <input type="text" id="donor-name" placeholder="Enter your full name" required>
+                            <input type="text" name="full_name" id="donor-name" placeholder="Enter your full name" required>
                         </div>
                         <div class="form-group">
                             <label for="donor-id">Username</label>
-                            <input type="text" id="donor-id" placeholder="Create username" required>
+                            <input type="text" name="username" id="donor-id" placeholder="Create username" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="donor-email">Email</label>
+                            <input type="email" name="email" id="donor-email" placeholder="Enter your email" required>
                         </div>
                         <div class="form-group">
                             <label for="donor-phone">Phone Number</label>
-                            <input type="tel" id="donor-phone" placeholder="Enter phone number" required>
+                            <input type="tel" name="phone" id="donor-phone" placeholder="Enter phone number" required>
                         </div>
                         <div class="form-group">
                             <label for="donor-password">Create Password</label>
-                            <input type="password" id="donor-password" placeholder="Create a password" required>
+                            <input type="password" name="password" id="donor-password" placeholder="Create a password" required>
                         </div>
-                        <div class="form-group">
-                            <label for="donor-confirm-password">Confirm Password</label>
-                            <input type="password" id="donor-confirm-password" placeholder="Confirm password" required>
-                        </div>
+                        <input type="hidden" name="user_type" value="donor">
                         <button type="submit" class="submit-btn donor">Register as Donor</button>
                         <div class="form-footer">
                             Already have an account? <a href="#" onclick="switchToLogin('donor')">Login here</a>
@@ -658,69 +663,12 @@
         }
         
         // Form submissions
-        document.getElementById('admin-form').addEventListener('submit', function(e) {
-            e.preventDefault();
-            alert('Admin login submitted');
-            closeModal('login');
-        });
-        
-        document.getElementById('volunteer-login-form').addEventListener('submit', function(e) {
-            e.preventDefault();
-            alert('Volunteer login submitted');
-            closeModal('login');
-        });
-        
-        document.getElementById('volunteer-signup-form').addEventListener('submit', function(e) {
-            e.preventDefault();
-            // Validate passwords match
-            const password = document.getElementById('volunteer-password').value;
-            const confirmPassword = document.getElementById('volunteer-confirm-password').value;
-            
-            if (password !== confirmPassword) {
-                alert('Passwords do not match!');
-                return;
-            }
-            
-            // Collect form data
-            const formData = {
-                name: document.getElementById('volunteer-name').value,
-                id: document.getElementById('volunteer-id').value,
-                phone: document.getElementById('volunteer-phone').value,
-                location: document.getElementById('volunteer-location').value
-            };
-            
-            console.log('Volunteer Signup Data:', formData);
-            alert('Volunteer registration submitted successfully!');
-            closeModal('signup');
-        });
-        
-        document.getElementById('donor-login-form').addEventListener('submit', function(e) {
-            e.preventDefault();
-            alert('Donor login submitted');
-            closeModal('login');
-        });
-        
-        document.getElementById('donor-signup-form').addEventListener('submit', function(e) {
-            e.preventDefault();
-            // Validate passwords match
-            const password = document.getElementById('donor-password').value;
-            const confirmPassword = document.getElementById('donor-confirm-password').value;
-            
-            if (password !== confirmPassword) {
-                alert('Passwords do not match!');
-                return;
-            }
-            
-            // Collect form data
-            const formData = {
-                name: document.getElementById('donor-name').value,
-                id: document.getElementById('donor-id').value,
-                phone: document.getElementById('donor-phone').value
-            };
-            
-            console.log('Donor Signup Data:', formData);
-            alert('Donor registration submitted successfully!');
-            closeModal('signup');
+        document.querySelectorAll('form').forEach(form => {
+            form.addEventListener('submit', function(e) {
+                // Let the form submit naturally to the PHP file
+                // Remove the e.preventDefault() to allow form submission
+                return true;
+            });
         });
     </script>
 </body>
